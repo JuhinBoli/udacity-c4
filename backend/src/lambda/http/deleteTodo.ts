@@ -12,8 +12,8 @@ export const handler = middy(
         // TODO: Remove a TODO item by id
         let todoId: string = event.pathParameters.todoId
         let response: APIGatewayProxyResult | PromiseLike<APIGatewayProxyResult>
-        let userId: string = getUserId(event)
-        let ms = await deleteTodos(userId, todoId)
+        let id: string = getUserId(event)
+        let ms = await deleteTodos(id, todoId)
         response = {
             statusCode: 204,
             body: ms
