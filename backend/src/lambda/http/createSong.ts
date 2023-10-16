@@ -2,21 +2,21 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import 'source-map-support/register'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
+import { CreateSongRequest } from '../../requests/CreateSongRequest'
 import { getUserId } from '../utils';
-import { createTodos } from '../../helpers/todos'
+import { createSongs } from '../../helpers/songs'
 
 export const handler = middy(
     async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
         // TODO: Implement creating a new TODO item
-        let createTodoRequest: CreateTodoRequest = JSON.parse(event.body)
+        let CreateSongRequest: CreateSongRequest = JSON.parse(event.body)
         let userId: string = getUserId(event)
         let res: APIGatewayProxyResult | PromiseLike<APIGatewayProxyResult>
-        let todoItem = await createTodos(userId, createTodoRequest)
+        let SongItem = await createSongs(userId, CreateSongRequest)
         res = {
             statusCode: 201,
             body: JSON.stringify({
-                item: todoItem
+                item: SongItem
             })
         }
         return res

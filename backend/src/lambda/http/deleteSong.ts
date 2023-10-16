@@ -4,16 +4,16 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
 
-import { deleteTodos } from '../../helpers/todos'
+import { deleteSong } from '../../helpers/songs'
 import { getUserId } from '../utils'
 
 export const handler = middy(
     async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
         // TODO: Remove a TODO item by id
-        let todoId: string = event.pathParameters.todoId
+        let songId: string = event.pathParameters.songId
         let response: APIGatewayProxyResult | PromiseLike<APIGatewayProxyResult>
         let id: string = getUserId(event)
-        let ms = await deleteTodos(id, todoId)
+        let ms = await deleteSong(id, songId)
         response = {
             statusCode: 204,
             body: ms

@@ -1,75 +1,76 @@
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { TodoItem } from '../models/TodoItem'
-import { TodoUpdate } from '../models/TodoUpdate';
+import { SongItem } from '../models/SongItem'
+import { SongUpdate } from '../models/SongUpdate';
 import { createLogger } from '../utils/logger'
 
 const XAWS = AWSXRay.captureAWSClient(new AWS.DynamoDB())
-const logger = createLogger('todosAccess')
+const logger = createLogger('songsAccess')
 // TODO: Implement the dataLayer logic
-export class TodosAccess {
+export class SongsAccess {
     private table: string
     private documentClient: DocumentClient
 
     constructor() {
         this.documentClient = new AWS.DynamoDB.DocumentClient({ service: XAWS })
-        this.table = process.env.TODOS_TABLE
+        this.table = process.env.SONGS_TABLE
     }
 
-    async createTodoItem(todoItem: TodoItem): Promise<TodoItem> {
-        logger.info(`Create item has Id ${todoItem.todoId}`)
-        await this.documentClient.put({TableName: this.table, Item: todoItem, ReturnValues: 'NONE'}).promise();
+    async createSongItem(SongItem: SongItem): Promise<SongItem> {
+        logger.info(`Create item has Id ${SongItem.songId}`)
+        await this.documentClient.put({TableName: this.table, Item: SongItem, ReturnValues: 'NONE'}).promise();
         logger.info(`Create item success`)
-        return todoItem;
+        return SongItem;
     }
 
-    async getTodoFromUserId(userId: string): Promise<TodoItem[]> {
-        logger.info(`get todo of ${userId}`)
+    async getSongFromUserId(userId: string): Promise<SongItem[]> {
+        logger.info(`get song of ${userId}`)
         let result = await this.documentClient
             .query({
                 TableName: this.table,
                 KeyConditionExpression: 'userId = :userId',
                 ExpressionAttributeValues: {':userId': userId}
             }).promise()
-        let todoItem = result.Items
-        logger.info(`get todo success`)
-        return todoItem as TodoItem[]
+        let SongItem = result.Items
+        logger.info(`get song success`)
+        return SongItem as SongItem[]
     }
 
-    async updateTodoItem(userId: string, todoId: string, dataUpdate: TodoUpdate): Promise<void> {
-        logger.info(`update item has todoId ${todoId}`)
+    async updateSongItem(userId: string, songId: string, dataUpdate: SongUpdate): Promise<void> {
+        logger.info(`update item has songId ${songId}`)
         await this.documentClient
             .update({
                 TableName: this.table,
-                Key: { userId, todoId },
-                UpdateExpression: 'set #nameTodo = :name, dueDate = :dueDate, done = :done',
-                ExpressionAttributeNames: { '#nameTodo': 'name' },
+                Key: { userId, songId },
+                UpdateExpression: 'set #nameSong = :name, author = :author, singer = :singer, done = :done',
+                ExpressionAttributeNames: { '#nameSong': 'name' },
                 ExpressionAttributeValues: {
                     ':name': dataUpdate.name,
-                    ':dueDate': dataUpdate.dueDate,
+                    ':author': dataUpdate.author,
+                    ':singer': dataUpdate.singer,
                     ':done': dataUpdate.done
                 }
             }).promise()
         logger.info(`update item success`)
     }
 
-    async deleteTodoItem(userId: string, todoId: string): Promise<void> {
-        logger.info(`delete item has id + ${todoId}`)
+    async deleteSongItem(userId: string, songId: string): Promise<void> {
+        logger.info(`delete item has id + ${songId}`)
         await this.documentClient.
             delete({
                 TableName: this.table, 
-                Key: { userId, todoId }
+                Key: { userId, songId }
             }).promise()
         logger.info(`delete item success`)
     }
 
-    async updateTodoAttachment(userId: string, todoId: string, attachmentUrl: string): Promise<void> {
-        logger.info(`update item attachment has id + ${todoId}`)
+    async updateSongAttachment(userId: string, songId: string, attachmentUrl: string): Promise<void> {
+        logger.info(`update item attachment has id + ${songId}`)
         await this.documentClient
             .update({
                 TableName: this.table,
-                Key: { userId, todoId },
+                Key: { userId, songId },
                 UpdateExpression: 'set attachmentUrl = :attachmentUrl',
                 ExpressionAttributeValues: {':attachmentUrl': attachmentUrl},
             }).promise()

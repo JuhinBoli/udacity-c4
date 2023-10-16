@@ -3,18 +3,18 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
-import { updateTodos } from '../../helpers/todos'
-import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
+import { updateSong } from '../../helpers/songs'
+import { UpdateSongRequest } from '../../requests/UpdateSongRequest'
 import { getUserId } from '../utils'
 
 export const handler = middy(
     async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-        // TODO: Update a TODO item with the provided id using values in the "updateTodoRequest" object
-        let updateTodoRequest: UpdateTodoRequest = JSON.parse(event.body)
+        // TODO: Update a TODO item with the provided id using values in the "UpdateSongRequest" object
+        let UpdateSongRequest: UpdateSongRequest = JSON.parse(event.body)
         let id: string = getUserId(event)
-        let todoId: string = event.pathParameters.todoId
+        let songId: string = event.pathParameters.songId
         let response: APIGatewayProxyResult | PromiseLike<APIGatewayProxyResult>
-        let ms = await updateTodos(id, todoId, updateTodoRequest)
+        let ms = await updateSong(id, songId, UpdateSongRequest)
         if (ms != "") {
             response = {
                 statusCode: 200,

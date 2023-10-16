@@ -16,8 +16,8 @@ export class AttachmentUtils {
         this.expire = parseInt(process.env.SIGNED_URL_EXPIRATION)
     }
 
-    getAttachmentUrl(todoId: string) {
-        return `https://${this.bucket}.s3.amazonaws.com/${todoId}`
+    getAttachmentUrl(songId: string) {
+        return `https://${this.bucket}.s3.amazonaws.com/${songId}`
     }
   
     async createAttachmentPresignedUrl(id: string): Promise<string> {

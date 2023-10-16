@@ -7,13 +7,19 @@
       "type": "string",
       "minLength": 1
     },
-    "dueDate": {
+    "author": {
+      "type": "string"
+    },
+    "singer": {
+      "type": "string"
+    },
+    "releaseDate": {
       "type": "string"
     }
   },
   "required": [
     "name",
-    "dueDate"
+    "singer"
   ],
   "additionalProperties": false
 }
