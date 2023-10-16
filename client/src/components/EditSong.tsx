@@ -65,27 +65,28 @@ export class EditSong extends React.PureComponent<
     this.setState({ newSongName: event.target.value })
   }
 
+
+  onBookUpdate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+    try {
+      const newSong = await patchSong(this.props.auth.getIdToken(), this.props.match.params.songId, {
+        name: this.state.newSongName,
+        author: this.state.author,
+        singer: this.state.singer,
+        done: this.state.done
+      })
+      alert("Update song successful")
+      
+    } catch {
+      alert('Update song failed')
+    }
+  }
+
   handleAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ author: event.target.value })
   }
   
   handleSingerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ singer: event.target.value })
-  }
-
-  onBookUpdate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
-    try {
-      const newTodo = await patchSong(this.props.auth.getIdToken(), this.props.match.params.songId, {
-        name: this.state.newSongName,
-        author: this.state.author,
-        singer: this.state.singer,
-        done: this.state.done
-      })
-      alert("Update successful")
-      
-    } catch {
-      alert('Book creation failed')
-    }
   }
 
 
