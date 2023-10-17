@@ -1,5 +1,5 @@
-import { SongsAccess } from './songsAcess'
-import { AttachmentUtils } from './attachmentUtils';
+import { SongsAccess } from '../dataLayer/songsAcess'
+import { AttachmentUtils } from '../helpers/attachmentUtils';
 import { SongItem } from '../models/SongItem'
 import { CreateSongRequest } from '../requests/CreateSongRequest'
 import { UpdateSongRequest } from '../requests/UpdateSongRequest'

@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
 
-import { getSongsForUser } from '../../helpers/songs'
+import { getSongsForUser } from '../../businessLogic/songs'
 import { getUserId } from '../utils';
 import { SongItem } from '../../models/SongItem'
 
